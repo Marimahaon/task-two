@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+ <html>
+  <head>
+  <meta charset="utf-8">
+  <title>Школа Разработки Интерфейсов. Студенты школы</title>
+  <style>
+    table {
+	  width:100%;
+	  border-spacing:1px;
+	  border: 1px solid black;
+	  cellpadding: auto;
+	  margin-bottom: 10px;
+	  }
+	 th,td{
+	 text-align:center; 
+	 valign:top;
+	 }
+	 .btn {
+	 	border: 1px solid black;
+	 	background-color: #f5f5f5;
+	 	font-weight: bold;
+	 	padding: 3px 5px;
+	 	cursor: pointer;
+	 }
+	 #addStudentName {
+	 	border: 0;
+	 	border-bottom: 1px solid black;
+	 	background-color: #f5f5f5;
+	 	padding: 3px 5px;
+	 }
+	 textarea {
+	 	width: 100%;
+	 }
+  </style>
+  <script src="http://yastatic.net/jquery/2.1.3/jquery.min.js"></script>
+  
+  <script>
+  	studentTableNumber = 1; /* Для пустой таблицы 1 */
+  	$(function(){
+  		var studentPrev;
+  		var komanda1_array = [];
+  		var komanda2_array = [];
+  		var komanda3_array = [];
+  		var komanda4_array = [];
+  		var komanda5_array = [];
+  		var komands_array = [komanda1_array, komanda2_array, komanda3_array, komanda4_array, komanda5_array];
+  		var komandsTdName_array = ["#komanda1", "#komanda2", "#komanda3", "#komanda4", "#komanda5"];
+
+  		function findStudentInArray(StudName){
+			komanda1_array.splice($.inArray(StudName, komanda1_array), 1);
+			komanda2_array.splice($.inArray(StudName, komanda2_array), 1);
+			komanda3_array.splice($.inArray(StudName, komanda3_array), 1);
+			komanda4_array.splice($.inArray(StudName, komanda4_array), 1);
+			komanda5_array.splice($.inArray(StudName, komanda5_array), 1);
+  		}
+
+
+  		function writeStudent() {
+  			$("#komanda1").children().remove();
+  			$("#komanda2").children().remove();
+  			$("#komanda3").children().remove();
+  			$("#komanda4").children().remove();
+  			$("#komanda5").children().remove();
+  			for (var i = 0; i < komanda1_array.length; i++) {
+  				$("#komanda1").append('<li>' + komanda1_array[i] + '</li>');
+  			}
+  			for (var i = 0; i < komanda2_array.length; i++) {
+  				$("#komanda2").append('<li>' + komanda2_array[i] + '</li>');
+  			}
+  			for (var i = 0; i < komanda3_array.length; i++) {
+  				$("#komanda3").append('<li>' + komanda3_array[i] + '</li>');
+  			}
+  			for (var i = 0; i < komanda4_array.length; i++) {
+  				$("#komanda4").append('<li>' + komanda4_array[i] + '</li>');
+  			}
+  			for (var i = 0; i < komanda5_array.length; i++) {
+  				$("#komanda5").append('<li>' + komanda5_array[i] + '</li>');
+  			}  			  			  			  			
+  		}
+
+  		$("#Student_table").on("mouseup", "select", function(){
+  			if (studentPrev == $(this).parent().parent().find("td").first().next().text()) {
+	  			findStudentInArray($(this).parent().parent().find("td").first().next().text());
+	  		}
+  			switch ($(this).val()) {
+  				case "Команда 1":
+   					komands_array[0].push($(this).parent().parent().find("td").first().next().text());
+   					writeStudent();
+  					break;
+  				case "Команда 2":
+   					komands_array[1].push($(this).parent().parent().find("td").first().next().text());
+   					writeStudent();
+  					break;
+  				case "Команда 3":
+   					komands_array[2].push($(this).parent().parent().find("td").first().next().text());
+   					writeStudent();
+  					break;
+  				case "Команда 4":
+   					komands_array[3].push($(this).parent().parent().find("td").first().next().text());
+   					writeStudent();
+  					break;
+  				case "Команда 5":
+   					komands_array[4].push($(this).parent().parent().find("td").first().next().text());
+   					writeStudent();
+  					break;
+  			}
+  			studentPrev = $(this).parent().parent().find("td").first().next().text();
+  		});
+
+  		$("#addStudent").click(function() {
+  			$("#Student_table").append(
+  				"<tr id='StudentNumber_" + studentTableNumber + "'><td>" +
+  				(studentTableNumber++) + 
+  				"</td><td>" +
+  				$("#addStudentName").val() +
+  				"</td><td> <select class='team'><option>Команда 1</option><option>Команда 2</option><option>Команда 3</option><option>Команда 4</option><option>Команда 5</option></select> </td><td></td><td><select class='mentor'><option value='mentor1'>Ментор 1</option><option value='mentor2'>Ментор 2</option><option value='mentor3'>Ментор 3</option></select></td></tr> <tr><td></td><td colspan='2'><p>Индивидуальные задания студента:</p><textarea></textarea><br><span class='btn'>Добавить задание</span><br><br></td><td><select class='rate'><option value='rate1'>Оценка 1</option><option value='rate2'>Оценка 2</option><option value='rate3'>Оценка 3</option></select></td><td></td></tr>");
+
+  			$("#mentor_table").find("tr").not("tr:first-child").find("td:nth-child(2)").append("<li>" + $("#addStudentName").val() + "</li>");
+  		});
+  	});
+  </script>
+
+  </head>
+
+  <body>
+  <table id="Student_table">
+	  <tr>
+	    <th>№</th>
+		<th>ФИО студента</th>
+		<th>Команда</th>
+		<th>Оценка</th>
+		<th>Ментор</th>
+	  </tr>
+  </table>
+  Добавьте имя студента — <input type="text" placeholder="Фамилия Имя Отчество" id="addStudentName"></input>
+  <span class="btn" id="addStudent">Добавить студента</span>
+  <br><br><br><br>
+  <table>
+  	<tr>
+  		<th>Команда 1</th>
+  		<th>Команда 2</th>
+  		<th>Команда 3</th>
+  		<th>Команда 4</th>
+  		<th>Команда 5</th>
+  	</tr>
+  	<tr>
+  		<td>
+  			<ul id="komanda1">
+  			</ul>
+  		</td>
+  		<td>
+  			<ul id="komanda2">
+  			</ul>
+  		</td>
+  		<td>
+  			<ul id="komanda3">
+  			</ul>
+  		</td>
+  		<td>
+  			<ul id="komanda4">
+  			</ul>
+  		</td>
+  		<td>
+  			<ul id="komanda5">
+  			</ul>
+  		</td>
+  	</tr>
+  </table>
+  <br><br>
+
+  <table id="mentor_table">
+  	<tr>
+  		<th>Имя ментора</th>
+  		<th>Выбор ментора</th>
+  		<th>Распределение учеников</th>
+  	</tr>
+  	<tr>
+  		<td>Ментор 1</td>
+  		<td>
+  			<ul>
+  				
+  			</ul>
+  		</td>
+  		<td>
+  			<ul></ul>
+		</td>
+  	</tr>
+  	<tr>
+  		<td>Ментор 2</td>
+  		<td>
+  			<ul></ul>
+  		</td>
+  		<td>
+  			<ul></ul>
+		</td>
+  	</tr>
+  	<tr>
+  		<td>Ментор 3</td>
+  		<td>
+  			<ul></ul>
+  		</td>
+  		<td>
+  			<ul></ul>
+		</td>
+  	</tr>
+  </table>
+  </body>
